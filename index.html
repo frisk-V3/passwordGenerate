@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Generator</title>
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 80px;
+        }
+        #password {
+            width: 300px;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        #generate { background: #4caf50; color: white; }
+        #copy { background: #2196f3; color: white; }
+    </style>
+</head>
+<body>
+
+    <h1>Password Generator</h1>
+
+    <input id="password" type="text" readonly>
+
+    <div>
+        <button id="generate">生成</button>
+        <button id="copy">コピー</button>
+    </div>
+
+    <script>
+        // パスワード生成関数
+        const generatePassword = (length = 16) => {
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+            const randomValues = new Uint32Array(length);
+            window.crypto.getRandomValues(randomValues);
+
+            return Array.from(randomValues)
+                .map((x) => charset[x % charset.length])
+                .join('');
+        };
+
+        const passwordField = document.getElementById("password");
+        const generateBtn = document.getElementById("generate");
+        const copyBtn = document.getElementById("copy");
+
+        // 生成ボタン
+        generateBtn.addEventListener("click", () => {
+            passwordField.value = generatePassword(20);
+        });
+
+        // コピー
+        copyBtn.addEventListener("click", () => {
+            navigator.clipboard.writeText(passwordField.value);
+            alert("コピーしました");
+        });
+    </script>
+
+</body>
+</html>
